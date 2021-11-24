@@ -17,8 +17,6 @@ app.use(express.static('public'));
 mongoose.connect(process.env.DB_URI,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
-    useCreateIndex:true,
-    useFindAndModify:true
 }).then(()=>{
     console.log('CONNECTED');
 }).catch((err)=>{
