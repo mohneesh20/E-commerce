@@ -7,11 +7,13 @@ const {
 
 const router = require("express").Router();
 router.post("/", verifyTokenAndAdmin, async (req, res) => {
-  const newProduct = new Product(req.body);
-
   try {
-    const savedProduct = await newProduct.save();
-    res.status(200).json(savedProduct);
+    await Product.create(req.body,(err,result)=>{
+      if(err){
+        return res.status(500).json(err);
+      }
+      res.status(200).json(result);
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -33,7 +35,7 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
 router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
-    res.status(200).json("Product has been deleted...");
+    res.status(200).json("PRODUCT DELETED..");
   } catch (err) {
     res.status(500).json(err);
   }
