@@ -2,9 +2,7 @@ import {
   Facebook,
   Instagram,
   MailOutline,
-  Phone,
   Pinterest,
-  Room,
   Twitter,
 } from "@material-ui/icons";
 import styled from "styled-components";
@@ -22,7 +20,8 @@ const Left = styled.div`
   padding: 20px;
 `;
 
-const Logo = styled.h1``;
+const Logo = styled.h1`
+color:goldenrod`;
 
 const Desc = styled.p`
   margin: 20px 0px;
@@ -87,11 +86,9 @@ const Footer = () => {
   return (
     <Container>
       <Left>
-        <Logo>LAMA.</Logo>
+        <Logo>DIGISHOP</Logo>
         <Desc>
-          There are many variations of passages of Lorem Ipsum available, but
-          the majority have suffered alteration in some form, by injected
-          humour, or randomised words which don’t look even slightly believable.
+        Offer valid on qualifying purchases of eligible products.
         </Desc>
         <SocialContainer>
           <SocialIcon color="3B5999">
@@ -124,15 +121,15 @@ const Footer = () => {
         </List>
       </Center>
       <Right>
-        <Title>Contact</Title>
-        <ContactItem>
+        <Title>CONTACT</Title>
+        {/* <ContactItem>
           <Room style={{marginRight:"10px"}}/> 622 Dixie Path , South Tobinchester 98336
-        </ContactItem>
-        <ContactItem>
+        </ContactItem> */}
+        {/* <ContactItem>
           <Phone style={{marginRight:"10px"}}/> +1 234 56 78
-        </ContactItem>
+        </ContactItem> */}
         <ContactItem>
-          <MailOutline style={{marginRight:"10px"}} /> contact@lama.dev
+          <MailOutline style={{marginRight:"10px"}} /> mohneeshbansal20@gmail.com
         </ContactItem>
         <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
       </Right>

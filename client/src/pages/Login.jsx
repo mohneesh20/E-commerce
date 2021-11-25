@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { login } from "../redux/apiCalls";
 import { mobile } from "../components/responsive";
 import { useDispatch, useSelector } from "react-redux";
-
+import {Link} from 'react-router-dom';
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -44,7 +44,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   border: none;
   padding: 15px 20px;
   background-color: teal;
@@ -55,14 +55,17 @@ const Button = styled.button`
     color: green;
     cursor: not-allowed;
   }
+  border-radius:5px;
+  font-size:20px;
+  font-weight:500;
 `;
 
-const Link = styled.a`
-  margin: 5px 0px;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+// const Link = styled.a`
+//   margin: 5px 0px;
+//   font-size: 15px;
+//   // text-decoration: underline;
+//   cursor: pointer;
+// `;
 
 const Error = styled.span`
   color: red;
@@ -84,20 +87,20 @@ const Login = () => {
         <Title>SIGN IN</Title>
         <Form>
           <Input
-            placeholder="username"
+            placeholder="USERNAME"
             onChange={(e) => setUsername(e.target.value)}
           />
           <Input
-            placeholder="password"
+            placeholder="PASSWORD"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button onClick={handleClick} disabled={isFetching}>
-            LOGIN
+            L O G I N
           </Button>
           {error && <Error>Something went wrong...</Error>}
-          <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          {/* <Link to='/'>DO NOT YOU REMEMBER THE PASSWORD?</Link> */}
+          <Link to="/register" style={{textDecoration:'none',fontSize:'20px',color:'black'}}>CREATE A NEW ACCOUNT</Link>
         </Form>
       </Wrapper>
     </Container>

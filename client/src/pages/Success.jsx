@@ -4,7 +4,7 @@ import { userRequest } from "../requestMethods"
 
 const Success = () => {
     const location = useLocation();
-    const data = location.state.data;
+    // const data = location.state.data;
     return (
         <div style={{height:"100vh",display:"flex", flexDirection:"column", alignItems:"center",justifyContent:"center"}}>
             Successfull. Your order is being prepared...

@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { mobile } from "../components/responsive";
-
+import {Link} from 'react-router-dom';
+import api from './regApi.js';
+import { useRef } from "react";
+import {useNavigate} from 'react-router';
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -26,6 +29,7 @@ const Wrapper = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 300;
+  font-family:Roboto Mono
 `;
 
 const Form = styled.form`
@@ -42,35 +46,64 @@ const Input = styled.input`
 
 const Agreement = styled.span`
   font-size: 12px;
-  margin: 20px 0px;
+  margin: 10px 0px;
 `;
 
 const Button = styled.button`
-  width: 40%;
+  width: 100%;
   border: none;
   padding: 15px 20px;
   background-color: teal;
   color: white;
   cursor: pointer;
+  border-radius:5px;
+  font-size:20px;
+  font-weight:500
 `;
 
 const Register = () => {
+  const usernameref=useRef();
+  const emailref=useRef();
+  const passwordref=useRef();
+  const confirmpasswordref=useRef();
+  const navigate=useNavigate();
+  const handleClick=async (e)=>{
+    e.preventDefault();
+    if(passwordref.current.value!==confirmpasswordref.current.value){
+      alert("PASSWORD NOT MATCHING");
+      return;
+    }
+    else{
+      try{
+        await api.post("/auth/register",{
+          username:usernameref.current.value,
+          password:passwordref.current.value,
+          email:emailref.current.value
+        });
+        navigate('/login');
+        // console.log(res.data);
+      }
+      catch(err){
+        console.log(err);
+      }
+    }
+  }
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
         <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
+          <Input placeholder="ENTER USERNAME" ref={usernameref}/>
+          {/* <Input placeholder="username" /> */}
+          <Input placeholder="ENTER EMAIL" ref={emailref}/>
+          <Input placeholder="ENTER PASSWORD" ref={passwordref}/>
+          <Input placeholder="CONFIRM PASSWORD" ref={confirmpasswordref}/>
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Link to="/login" style={{textDecoration:'none',fontSize:'18.0px',color:'purple',margin:'2px 0'}}>Already have an account?</Link>
+          <Button onClick={handleClick}>R E G I S T E R</Button>
         </Form>
       </Wrapper>
     </Container>

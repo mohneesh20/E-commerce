@@ -8,11 +8,13 @@ import { Link } from "react-router-dom";
 
 const Container = styled.div`
   height: 60px;
+  display:flex;
+  align-items:center;
   ${mobile({ height: "50px" })}
 `;
 
 const Wrapper = styled.div`
-  padding: 10px 20px;
+  flex:1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -24,13 +26,6 @@ const Left = styled.div`
   display: flex;
   align-items: center;
 `;
-
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  ${mobile({ display: "none" })}
-`;
-
 const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
   display: flex;
@@ -51,6 +46,8 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
+  font-family:"Roboto Mono";
+  color:goldenrod;
   ${mobile({ fontSize: "24px" })}
 `;
 const Right = styled.div`
@@ -62,9 +59,10 @@ const Right = styled.div`
 `;
 
 const MenuItem = styled.div`
-  font-size: 14px;
+  font-size: 20px;
   cursor: pointer;
   margin-left: 25px;
+  color:black;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
@@ -74,14 +72,14 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
+          {/* <Language>EN</Language> */}
           <SearchContainer>
             <Input placeholder="Search" />
             <Search style={{ color: "gray", fontSize: 16 }} />
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>LAMA.</Logo>
+          <Logo>DIGISHOP</Logo>
         </Center>
         <Right>
           <Link to="/register">
