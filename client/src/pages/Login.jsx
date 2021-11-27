@@ -5,6 +5,8 @@ import { mobile } from "../components/responsive";
 import { useDispatch, useSelector } from "react-redux";
 import {Link} from 'react-router-dom';
 import { useNavigate } from "react-router";
+import { userRequest } from "../requestMethods";
+import { current } from "immer";
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
@@ -78,11 +80,24 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate=useNavigate();
   const { isFetching, error,currentUser} = useSelector((state) => state.user);
+  const { products,quantity,total} = useSelector((state) => state.cart);
   useEffect(()=>{
+    const postCartsInDb=async ()=>{
+      const postCart={userId:currentUser._id,products,quantity,total};
+      try{
+        // console.log(currentUser.accessToken);
+        const res=await userRequest.put("/carts/"+currentUser._id,postCart);
+        if(res.status===200){
+          Logout(dispatch);
+          navigate("/");
+        }
+      }
+      catch(err){        
+        console.log(err);
+      }
+    }
     if(currentUser){
-      console.log(currentUser);
-      Logout(dispatch);
-      navigate("/");
+      postCartsInDb();
       return;
     }
   },[])
@@ -90,6 +105,7 @@ const Login = () => {
     e.preventDefault();
     login(dispatch, { username, password });
     navigate('/');
+    // window.location.reload();
   };
   return (
     <Container>

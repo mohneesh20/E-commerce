@@ -19,15 +19,31 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+  // console.log(req.body);
   try {
-    const updatedCart = await Cart.findByIdAndUpdate(
-      req.params.id,
+    const updatedCart = await Cart.findOneAndUpdate(
+      {userId:req.params.id},
       {
         $set: req.body,
       },
       { new: true }
     );
-    res.status(200).json(updatedCart);
+    // console.log(updatedCart);
+    if(updatedCart===null){
+      try {
+        await Cart.create(req.body,(err,result)=>{
+          if(err){
+            return res.status(500).json(err);
+          }
+          return res.status(200).json(result);
+        });
+      } catch (err) {
+        res.status(500).json(err);
+      }     
+    }
+    else{
+      res.status(200).json(updatedCart);
+    }
   } catch (err) {
     res.status(500).json(err);
   }

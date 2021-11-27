@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { mobile } from "./responsive";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
+import {useRef} from 'react';
+import { useNavigate } from "react-router";
 const Container = styled.div`
   height: 60px;
   display:flex;
@@ -67,17 +68,25 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
+  const search=useRef();
+  const navigate =useNavigate();
   const user = useSelector(state=>state.user.currentUser);
-  // console.log(user);
-  const quantity = useSelector(state=>state.cart.quantity)
+  const quantity = useSelector(state=>state.cart.quantity);
+  const searchProduductCategory=(e)=>{
+    e.preventDefault();
+    if(search.current.value===""){
+      search.current.value=null;
+    }
+    navigate("/products/"+search.current.value);
+  }
   return (
     <Container>
       <Wrapper>
         <Left>
           {/* <Language>EN</Language> */}
           <SearchContainer>
-            <Input placeholder="Search" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
+            <Input placeholder="Search"  ref={search}/>
+            <Search style={{ color: "gray", fontSize: 16 }} onClick={searchProduductCategory}/>
           </SearchContainer>
         </Left>
         <Center>

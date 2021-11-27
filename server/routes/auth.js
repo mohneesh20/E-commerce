@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Cart = require("../models/Cart");
 const CryptoJS = require("crypto-js");
 const jwt = require("jsonwebtoken");
 router.post("/register", async (req, res) => {
@@ -35,8 +36,11 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SEC,
       {expiresIn:"3d"}
     );
+    // const cart=await Cart.findOne({userId:user._id});
+    // console.log(cart);
     const { password, ...others } = user._doc;
     res.status(200).json({...others, accessToken});
+    // res.status(200).json({...others, accessToken,cart});
   } catch (err) {
     res.status(500).json(err);
   }

@@ -11,10 +11,10 @@ const Success = () => {
   const cart = location.state.cart;
   const currentUser = useSelector((state) => state.user.currentUser);
   const [orderId, setOrderId] = useState(null);
-  console.log(currentUser);
+  // console.log(currentUser);
   useEffect(() => {
     const createOrder = async () => {
-      console.log(cart.total);
+      // console.log(cart.total);
       try {
         const res = await userRequest.post("/orders", {
           userId: currentUser._id,
@@ -26,8 +26,11 @@ const Success = () => {
           address: data.billing_details.address,
         });
         setOrderId(res.data._id);
-      } catch {}
+      } catch(err){
+        console.log(err);
+      }
     };
+    // console.log(data);
     data && createOrder();
   }, [cart, data, currentUser]);
 

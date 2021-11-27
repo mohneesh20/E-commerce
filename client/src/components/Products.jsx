@@ -12,10 +12,10 @@ const Container = styled.div`
 const Products = ({ category, filters, sort }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-
   useEffect(() => {
     const getProducts = async () => {
       try {
+        // console.log(category);
         const res = await api.get(category?`/products?category=${category}`: "/products");
         // alert(JSON.stringify(res.data[0]));
         setProducts(res.data);
