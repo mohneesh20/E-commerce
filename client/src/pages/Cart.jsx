@@ -1,5 +1,5 @@
-import { Add, Remove } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { Clear } from "@material-ui/icons";
+import { useSelector,useDispatch } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -9,7 +9,7 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router-dom";
-
+import { removeProduct } from "../redux/cartRedux";
 const KEY = process.env.REACT_APP_STRIPE;
 
 const Container = styled.div``;
@@ -64,12 +64,16 @@ const Info = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color:#f5f5f0;
+  margin:5px;
+  border-radius:2px;
   ${mobile({ flexDirection: "column" })}
 `;
 
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+  padding:5px;
 `;
 
 const Image = styled.img`
@@ -81,6 +85,7 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  // background-color:#f5f5f0;
 `;
 
 const ProductName = styled.span``;
@@ -161,6 +166,7 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const dispatch=useDispatch();
   const cart = useSelector((state) => state.cart);
   const {currentUser} = useSelector((state) => state.user);
   // console.log(KEY);
@@ -176,8 +182,15 @@ const Cart = () => {
     // console.log(token);
     setStripeToken(token);
   };
-
+  const removeFromCart=(id,quantity,price)=>{
+    // console.log(id);
+    // console.log(quantity);
+    // console.log(price);
+    let {products}=cart;
+    dispatch(removeProduct({products,id,quantity,price}))
+  }
   useEffect(() => {
+    // console.log(cart.products);
     const makeRequest = async () => {
       try {
         const res = await userRequest.post("/checkout/payment", {
@@ -210,6 +223,7 @@ const Cart = () => {
           <Info>
             {cart.products.map((product) => (
               <Product key={product._id}>
+                <Clear onClick={()=>removeFromCart(product._id,product.quantity,product.price)}/>
                 <ProductDetail>
                   <Image src={`/Photos/${product.img}`} />
                   <Details>
@@ -220,16 +234,19 @@ const Cart = () => {
                       <b>ID:</b> {product._id}
                     </ProductId>
                     <ProductColor color={product.color} />
-                    <ProductSize>
+                    {
+                      product.size?
+                      <ProductSize>
                       <b>SIZE:</b> {product.size}
-                    </ProductSize>
+                    </ProductSize>:null
+                    }
                   </Details>
                 </ProductDetail>
                 <PriceDetail>
                   <ProductAmountContainer>
-                    <Add />
+                    <b>QUANTITY:</b>
                     <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
+                    
                   </ProductAmountContainer>
                   <ProductPrice>
                   ₹ {product.price * product.quantity}
@@ -241,18 +258,6 @@ const Cart = () => {
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-            {/* <SummaryItem>
-              <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>$ {cart.total}</SummaryItemPrice>
-            </SummaryItem> */}
-            {/* <SummaryItem>
-              <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$ 5.90</SummaryItemPrice>
-            </SummaryItem>
-            <SummaryItem>
-              <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>$ -5.90</SummaryItemPrice>
-            </SummaryItem> */}
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>₹ {cart.total}</SummaryItemPrice>
