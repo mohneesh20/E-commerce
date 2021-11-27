@@ -30,7 +30,7 @@ const SearchContainer = styled.div`
   border: 0.5px solid lightgray;
   display: flex;
   align-items: center;
-  margin-left: 25px;
+  // margin-left: 25px;
   padding: 5px;
 `;
 
@@ -46,7 +46,7 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
-  font-family:"Roboto Mono";
+  font-family:Roboto Mono;
   color:goldenrod;
   ${mobile({ fontSize: "24px" })}
 `;
@@ -61,12 +61,14 @@ const Right = styled.div`
 const MenuItem = styled.div`
   font-size: 20px;
   cursor: pointer;
-  margin-left: 25px;
+  margin-left: 10px;
   color:black;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
 const Navbar = () => {
+  const user = useSelector(state=>state.user.currentUser);
+  // console.log(user);
   const quantity = useSelector(state=>state.cart.quantity)
   return (
     <Container>
@@ -86,7 +88,8 @@ const Navbar = () => {
           <MenuItem>REGISTER</MenuItem>
           </Link>
           <Link to="/login">
-          <MenuItem>SIGN IN</MenuItem>
+            {!user?._id?<MenuItem>SIGN IN</MenuItem>:<MenuItem>LOGOUT</MenuItem>
+            }
           </Link>
           <Link to="/cart">
           <MenuItem>

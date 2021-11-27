@@ -5,12 +5,12 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newsletter from "../components/Newsletter";
 import { mobile } from "../components/responsive";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethods";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
-
+import {Link} from 'react-router-dom';
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -33,6 +33,8 @@ const Image = styled.img`
 const InfoContainer = styled.div`
   flex: 1;
   padding: 0px 50px;
+  background-color:#f5f5f0;
+  opacity:0.8;
   ${mobile({ padding: "10px" })}
 `;
 
@@ -42,11 +44,15 @@ const Title = styled.h1`
 
 const Desc = styled.p`
   margin: 20px 0px;
+  background-color:white;
+  padding:5px;
+  border-radius:2px
 `;
 
 const Price = styled.span`
   font-weight: 100;
   font-size: 40px;
+  color:red;
 `;
 
 const FilterContainer = styled.div`
@@ -74,11 +80,16 @@ const FilterColor = styled.div`
   background-color: ${(props) => props.color};
   margin: 0px 5px;
   cursor: pointer;
+  border:2px solid goldenrod;
 `;
 
 const FilterSize = styled.select`
   margin-left: 10px;
   padding: 5px;
+  color:goldenrod;
+  background:transparent;
+  width:100px;
+  border:1px dashed black;
 `;
 
 const FilterSizeOption = styled.option``;
@@ -95,13 +106,16 @@ const AmountContainer = styled.div`
   display: flex;
   align-items: center;
   font-weight: 700;
+  font-size:20px;
+  border:2px solid goldenrod;
+  padding:5px
 `;
 
 const Amount = styled.span`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  border: 1px solid teal;
+  border: 1px solid goldenrod;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,18 +124,20 @@ const Amount = styled.span`
 
 const Button = styled.button`
   padding: 15px;
-  border: 2px solid teal;
-  background-color: white;
+  border: 2px solid goldenrod;
+  background-color: transparent;
   cursor: pointer;
   font-weight: 500;
+  font-size:20px;
+  border-radius:2px;
+  color:goldenrod;
   &:hover {
     background-color: #f8f4f4;
   }
 `;
 
 const Product = () => {
-  const location = useLocation();
-  const id = location.pathname.split("/")[2];
+  const {id}=useParams();
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
@@ -132,8 +148,11 @@ const Product = () => {
     const getProduct = async () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
+        // alert(JSON.stringify(res.data));
         setProduct(res.data);
-      } catch {}
+      } catch(err){
+        console.log(err);
+      }
     };
     getProduct();
   }, [id]);
@@ -157,22 +176,23 @@ const Product = () => {
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src={product.img} />
+          <Image src={`/Photos/${product.img}`} />
         </ImgContainer>
         <InfoContainer>
           <Title>{product.title}</Title>
           <Desc>{product.desc}</Desc>
-          <Price>$ {product.price}</Price>
+          <Price>₹ {product.price}</Price>
           <FilterContainer>
             <Filter>
-              <FilterTitle>Color</FilterTitle>
+              <FilterTitle>COLOR:</FilterTitle>
               {product.color?.map((c) => (
                 <FilterColor color={c} key={c} onClick={() => setColor(c)} />
               ))}
             </Filter>
             <Filter>
-              <FilterTitle>Size</FilterTitle>
+              <FilterTitle>SIZE</FilterTitle>
               <FilterSize onChange={(e) => setSize(e.target.value)}>
+              <FilterSizeOption>SELECT SIZE</FilterSizeOption>
                 {product.size?.map((s) => (
                   <FilterSizeOption key={s}>{s}</FilterSizeOption>
                 ))}
@@ -185,7 +205,9 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => handleQuantity("inc")} />
             </AmountContainer>
+            <Link to="/cart">
             <Button onClick={handleClick}>ADD TO CART</Button>
+            </Link>
           </AddContainer>
         </InfoContainer>
       </Wrapper>

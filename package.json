@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "create-react-app": "^4.0.3"
+    "create-react-app": "^4.0.3",
+    "react-stripe-checkout": "^2.6.3"
   }
 }
