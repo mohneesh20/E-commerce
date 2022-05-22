@@ -166,6 +166,7 @@ const Product = () => {
   };
 
   const handleClick = () => {
+    // console.log("CART ITEM");
     dispatch(
       addProduct({ ...product, quantity, color, size })
     );
